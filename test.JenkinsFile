@@ -21,11 +21,12 @@ pipeline {
                 script {
                     // Run SonarQube analysis
                     withSonarQubeEnv(SONARQUBE_SERVER) {
+                        // sh 'sonar-scanner -Dsonar.projectKey= -Dsonar.sources=src'
                         // -Dsonar.projectName=Your Project \
                         sh """
                             echo ${B_NAME} \
                             sonar-scanner \
-                            -Dsonar.projectKey=tkxel_assignment_1 \
+                            -Dsonar.projectKey=tkxelassigmenttest \
                             -Dsonar.projectVersion=${B_NAME} \
                             -Dsonar.sources=. \
                             -Dsonar.branch.name=${B_NAME} \
