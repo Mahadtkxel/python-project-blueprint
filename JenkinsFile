@@ -1,0 +1,64 @@
+pipeline {
+    agent any
+    
+    environment {
+        SONARQUBE_SERVER = 'sonarqube'  // This is the SonarQube server configured in Jenkins
+        SONARQUBE_SCANNER = 'sonarqube'  // The SonarQube Scanner name from Jenkins config
+        DOCKER_IMAGE = "assignemtn_1"
+        IMAGE_TAG = ""
+    }
+    
+    stages {
+        stage('Checkout') {
+            steps {
+                // Checkout code from GitHub or any Git repository
+                git branch: "${BRANCH_NAME}", url: 'https://github.com/Mahadtkxel/python-project-blueprint.git'
+            }
+        }
+        
+        stage('SonarQube Analysis') {
+            steps {
+                script {
+                    // Run SonarQube analysis
+                    withSonarQubeEnv(SONARQUBE_SERVER) {
+                        sh """
+                            sonar-scanner \
+                            -Dsonar.projectKey=your_project_key \
+                            -Dsonar.projectName=Your Project \
+                            -Dsonar.projectVersion=${BRANCH_NAME} \
+                            -Dsonar.sources=. \
+                            -Dsonar.branch.name=${BRANCH_NAME} \
+                            -Dsonar.host.url=http://sonarqube:9000
+                        """
+                    }
+                }
+            }
+        }
+        
+        stage('Quality Gate') {
+            steps {
+                // Wait for SonarQube to analyze the branch and check the quality gate status
+                waitForQualityGate abortPipeline: true
+            }
+        }
+
+        stage("Building docker image") {
+            steps {
+                script {
+                    sh """
+                        docker build -t ${DOCKER_IMAGE}:${imageTag} .
+                    """
+                }
+            }
+        }
+    }
+    
+    post {
+        success {
+            echo 'SonarQube analysis completed successfully.'
+        }
+        failure {
+            echo 'SonarQube analysis failed.'
+        }
+    }
+}
