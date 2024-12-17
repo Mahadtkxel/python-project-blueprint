@@ -20,14 +20,15 @@ pipeline {
                 script {
                     // Run SonarQube analysis
                     withSonarQubeEnv(SONARQUBE_SERVER) {
+                        // -Dsonar.projectName=Your Project \
                         sh """
                             sonar-scanner \
-                            -Dsonar.projectKey=your_project_key \
-                            -Dsonar.projectName=Your Project \
+                            -Dsonar.projectKey=tkxel_assignment_1 \
                             -Dsonar.projectVersion=${BRANCH_NAME} \
                             -Dsonar.sources=. \
                             -Dsonar.branch.name=${BRANCH_NAME} \
                             -Dsonar.host.url=http://sonarqube:9000
+                            -Dsonar.login=sqp_15c1edd1ed7d04f8c9aaee09c6a3528ba336de7e
                         """
                     }
                 }
