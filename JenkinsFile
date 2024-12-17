@@ -5,7 +5,8 @@ pipeline {
         SONARQUBE_SERVER = 'sonarqube'  // This is the SonarQube server configured in Jenkins
         SONARQUBE_SCANNER = 'sonarqube'  // The SonarQube Scanner name from Jenkins config
         DOCKER_IMAGE = "assignemtn_1"
-        IMAGE_TAG = ""
+        IMAGE_TAG = "latest"
+        B_NAME = "master"
     }
     
     stages {
@@ -22,12 +23,12 @@ pipeline {
                     withSonarQubeEnv(SONARQUBE_SERVER) {
                         // -Dsonar.projectName=Your Project \
                         sh """
-                            echo ${BRANCH_NAME} \
+                            echo ${B_NAME} \
                             sonar-scanner \
                             -Dsonar.projectKey=tkxel_assignment_1 \
-                            -Dsonar.projectVersion=${BRANCH_NAME} \
+                            -Dsonar.projectVersion=${B_NAME} \
                             -Dsonar.sources=. \
-                            -Dsonar.branch.name=${BRANCH_NAME} \
+                            -Dsonar.branch.name=${B_NAME} \
                             -Dsonar.host.url=http://sonarqube:9000
                             -Dsonar.login=sqp_15c1edd1ed7d04f8c9aaee09c6a3528ba336de7e
                         """
