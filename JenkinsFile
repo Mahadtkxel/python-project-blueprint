@@ -22,6 +22,7 @@ pipeline {
                     withSonarQubeEnv(SONARQUBE_SERVER) {
                         // -Dsonar.projectName=Your Project \
                         sh """
+                            echo ${BRANCH_NAME} \
                             sonar-scanner \
                             -Dsonar.projectKey=tkxel_assignment_1 \
                             -Dsonar.projectVersion=${BRANCH_NAME} \
