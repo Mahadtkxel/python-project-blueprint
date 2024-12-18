@@ -1,0 +1,36 @@
+pipeline {
+    agent any
+    def p = load("params.groovy")
+    stages {
+        stage('Checkout Code') {
+            steps {
+                git branch: ${p.BRANCH_NAME}, url: ${p.GIT_URL}
+            }
+        }
+        stage('Sonarqube Code Analysis') {
+            environment {
+                scannerHome = tool name: ${TOOL_NAME}
+            }
+            steps {
+                script {
+                    withSonarQubeEnv('sonarqube') {
+                        sh '''
+                            ${scannerHome}/bin/sonar-scanner \
+                                -Dsonar.projectKey= ${p.SONAR_PROJECT} \
+                                -Dsonar.projectName= ${p.SONAR_PROJECT} \
+                                -Dsonar.sources=.
+                        '''
+                    }
+                }
+            }
+        }
+
+        stage("Building Docker Image") {
+            steps {
+                script {
+                    sh "whoami && docker build -t ${p.IMAGE_TAG} -f ${p.DOCKER_FILE} ."
+                }
+             }
+        }
+    }
+}
