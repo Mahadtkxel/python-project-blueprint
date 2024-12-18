@@ -1,6 +1,8 @@
+def p = load("params.groovy")
+
 pipeline {
     agent any
-    def p = load("params.groovy")
+    
     stages {
         stage('Checkout Code') {
             steps {
