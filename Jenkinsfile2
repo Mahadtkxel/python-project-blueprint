@@ -5,12 +5,15 @@ pipeline {
     
     stages {
         stage("load script") {
-            script {
-                node {
-                    p = load("params.groovy")
+            steps {
+                    script {
+                    node {
+                        p = load("params.groovy")
+                    }
                 }
             }
         }
+
         stage('Checkout Code') {
             steps {
                 git branch: "${p.BRANCH_NAME}", url: "${p.GIT_URL}"
