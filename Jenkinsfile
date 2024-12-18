@@ -27,7 +27,7 @@ pipeline {
         stage("Building Docker Image") {
             steps {
                 script {
-                    sh "docker build -t tkxelassingment_1 -f dev.Dockerfile ."
+                    sh "whoami && docker build -t tkxelassingment_1 -f dev.Dockerfile ."
                 }
              }
         }
