@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Checkout Code') {
             steps {
-                git branch: ${p.BRANCH_NAME}, url: ${p.GIT_URL}
+                git branch: p.BRANCH_NAME, url: p.GIT_URL
             }
         }
         stage('Sonarqube Code Analysis') {
