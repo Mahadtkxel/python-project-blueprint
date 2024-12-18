@@ -9,12 +9,12 @@ pipeline {
                 script{
                      p = load("params.groovy")
                 }
-                git branch: p.BRANCH_NAME, url: p.GIT_URL
+                git branch: "${p.BRANCH_NAME}", url: "${p.GIT_URL}"
             }
         }
         stage('Sonarqube Code Analysis') {
             environment {
-                scannerHome = tool name: ${TOOL_NAME}
+                scannerHome = tool name: ${p.TOOL_NAME}
             }
             steps {
                 script {
