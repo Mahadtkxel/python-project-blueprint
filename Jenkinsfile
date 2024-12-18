@@ -15,8 +15,8 @@ pipeline {
                     withSonarQubeEnv('sonarqube') {
                         sh """
                             ${scannerHome}/bin/sonar-scanner \
-                                -Dsonar.projectKey=tkxelassigmenttest \
-                                -Dsonar.projectName=tkxelassigmenttest \
+                                -Dsonar.projectKey=tkxelassigment1 \
+                                -Dsonar.projectName=tkxelassigment1 \
                                 -Dsonar.sources=.
                         """
                     }
