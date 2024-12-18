@@ -1,3 +1,5 @@
+def p 
+
 pipeline {
     agent any
     
@@ -5,7 +7,7 @@ pipeline {
         stage('Checkout Code') {
             steps {
                 script{
-                    def p = load("params.groovy")
+                     p = load("params.groovy")
                 }
                 git branch: p.BRANCH_NAME, url: p.GIT_URL
             }
