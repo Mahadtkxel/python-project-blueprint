@@ -5,8 +5,10 @@ pipeline {
     
     stages {
         stage("load script") {
-            node {
-                p = load("params.groovy")
+            script {
+                node {
+                    p = load("params.groovy")
+                }
             }
         }
         stage('Checkout Code') {
