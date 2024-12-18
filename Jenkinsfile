@@ -25,7 +25,11 @@ pipeline {
         // }
 
         stage("Building Docker Image") {
-            sh """ docker --version """
+            steps {
+                script {
+                    sh "docker --version"
+                }
+             }
         }
     }
 }
