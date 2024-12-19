@@ -2,42 +2,33 @@ def p
 
 pipeline {
     agent any
-    options {
-        disableConcurrentBuilds()
-        
+    
+    parameters {
+        string(name: "BRANCH_NAME", defaultValue: "master")
+        string(name: "GIT_URL", defaultValue: "https://github.com/Mahadtkxel/python-project-blueprint.git")
+        string(name: "TOOL_NAME", defaultValue: "sonarqube")
+        string(name: "SONAR_PROJECT", defaultValue: "tkxelassignment1")
+        string(name: "IMAGE_TAG", defaultValue: "tkxelassignment_1")
+        string(name: "DOCKERFILE", defaultValue: "dev.Dockerfile")
     }
     
     stages {
-        stage("load script") {
-            steps {
-                cleanWs()
-                ws('/var/jenkins_home/workspace/tkxelassignment1'){
-                    script {
-                    node {
-                        p = load "params.groovy"
-                    }
-                }
-                }
-                    
-            }
-        }
-
         stage('Checkout Code') {
             steps {
-                git branch: p.BRANCH_NAME, url: p.GIT_URL
+                git branch: params.BRANCH_NAME, url: params.GIT_URL
             }
         }
         stage('Sonarqube Code Analysis') {
             environment {
-                scannerHome = tool name: p.TOOL_NAME
+                scannerHome = tool name: params.TOOL_NAME
             }
             steps {
                 script {
-                    withSonarQubeEnv('sonarqube') {
+                    withSonarQubeEnv(params.TOOL_NAME) {
                         sh """
                             ${scannerHome}/bin/sonar-scanner \
-                                -Dsonar.projectKey= ${p.SONAR_PROJECT} \
-                                -Dsonar.projectName= ${p.SONAR_PROJECT} \
+                                -Dsonar.projectKey= ${params.SONAR_PROJECT} \
+                                -Dsonar.projectName= ${params.SONAR_PROJECT} \
                                 -Dsonar.sources=.
                         """
                     }
@@ -48,7 +39,7 @@ pipeline {
         stage("Building Docker Image") {
             steps {
                 script {
-                    sh "whoami && docker build -t ${p.IMAGE_TAG} -f ${p.DOCKER_FILE} ."
+                    sh "whoami && docker build -t ${params.IMAGE_TAG} -f ${params.DOCKER_FILE} ."
                 }
              }
         }
