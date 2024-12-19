@@ -39,7 +39,7 @@ pipeline {
         stage("Building Docker Image") {
             steps {
                 script {
-                    sh "whoami && docker build -t ${params.IMAGE_TAG} -f ${params.DOCKER_FILE} ."
+                    sh "whoami && docker build -t ${params.IMAGE_TAG} -f ${params.DOCKERFILE} ."
                 }
              }
         }
