@@ -2,36 +2,42 @@ def p
 
 pipeline {
     agent any
+    options {
+        disableConcurrentBuilds()
+    }
     
     stages {
         stage("load script") {
             steps {
+                ws('/var/jenkins_home/workspace/tkxelassignment1'){
                     script {
                     node {
-                        p = load("params.groovy")
+                        p = load "params.groovy"
                     }
                 }
+                }
+                    
             }
         }
 
         stage('Checkout Code') {
             steps {
-                git branch: "${p.BRANCH_NAME}", url: "${p.GIT_URL}"
+                git branch: p.BRANCH_NAME, url: p.GIT_URL
             }
         }
         stage('Sonarqube Code Analysis') {
             environment {
-                scannerHome = tool name: ${p.TOOL_NAME}
+                scannerHome = tool name: p.TOOL_NAME
             }
             steps {
                 script {
                     withSonarQubeEnv('sonarqube') {
-                        sh '''
+                        sh """
                             ${scannerHome}/bin/sonar-scanner \
                                 -Dsonar.projectKey= ${p.SONAR_PROJECT} \
                                 -Dsonar.projectName= ${p.SONAR_PROJECT} \
                                 -Dsonar.sources=.
-                        '''
+                        """
                     }
                 }
             }
