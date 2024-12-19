@@ -27,8 +27,8 @@ pipeline {
                     withSonarQubeEnv(params.TOOL_NAME) {
                         sh """
                             ${scannerHome}/bin/sonar-scanner \
-                                -Dsonar.projectKey= ${params.SONAR_PROJECT} \
-                                -Dsonar.projectName= ${params.SONAR_PROJECT} \
+                                -Dsonar.projectKey=${params.SONAR_PROJECT} \
+                                -Dsonar.projectName=${params.SONAR_PROJECT} \
                                 -Dsonar.sources=.
                         """
                     }
