@@ -4,12 +4,13 @@ pipeline {
     agent any
     options {
         disableConcurrentBuilds()
-        cleanWs()
+        
     }
     
     stages {
         stage("load script") {
             steps {
+                cleanWs()
                 ws('/var/jenkins_home/workspace/tkxelassignment1'){
                     script {
                     node {
