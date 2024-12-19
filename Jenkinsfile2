@@ -4,6 +4,7 @@ pipeline {
     agent any
     options {
         disableConcurrentBuilds()
+        cleanWs()
     }
     
     stages {
